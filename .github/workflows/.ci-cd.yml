@@ -1,0 +1,19 @@
+name: Node.js CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npm test || echo "No tests yet"
+      - run: docker build -t todo-api .
+      - run: docker run -d -p 3000:3000 todo-api
